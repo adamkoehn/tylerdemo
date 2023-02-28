@@ -37,14 +37,13 @@ export default class Shader {
     constructor(context) {
         this.gl = context.getGl();
         this.program = linkProgram(this.gl);
-        this.positionLocation = this.gl.getAttribLocation(this.program, 'Position');
         this.modelMatrix = this.gl.getUniformLocation(this.program, 'ModelMatrix');
         this.viewMatrix = this.gl.getUniformLocation(this.program, 'ViewMatrix');
         this.projectionMatrix = this.gl.getUniformLocation(this.program, 'ProjectionMatrix');
     }
 
-    getPositionLocation() {
-        return this.positionLocation;
+    getVertexLocation() {
+        return this.vertexLocation;
     }
 
     setModelMatrix(modelMatrix) {
