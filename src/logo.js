@@ -3,10 +3,16 @@ import { OBJ } from "webgl-obj-loader";
 import { mat4 } from "gl-matrix";
 
 export default class Logo {
-    constructor(context, shader) {
+    constructor(context, controller) {
         this.context = context;
+        this.controller = controller;
         this.gl = context.getGl();
         this.model = mat4.create();
+
+        this.loadModel();
+    }
+
+    loadModel() {
         mat4.scale(this.model, this.model, [0.02, 0.02, 0.02]);
         mat4.rotate(this.model, this.model, (90.0 * Math.PI) / 180.0, [1.0, 0.0, 0.0]);
 
@@ -38,8 +44,13 @@ export default class Logo {
     }
 
     update(delta) {
-        const degrees = (90.0 * delta);
-        mat4.rotate(this.model, this.model, (degrees * Math.PI) / 180.0, [0.2, 0.4, 1.0]);
+        if (this.controller.isClicked()) {
+            mat4.rotate(this.model, this.model, ((this.controller.getMovementX() / 2.0) * Math.PI) / 180.0, [0.0, 1.0, 0.0]);
+            mat4.rotate(this.model, this.model, ((this.controller.getMovementY() / 2.0) * Math.PI) / 180.0, [1.0, 0.0, 0.0]);
+        } else {
+            const degrees = (90.0 * delta);
+            mat4.rotate(this.model, this.model, (degrees * Math.PI) / 180.0, [0.2, 0.4, 1.0]);
+        }
     }
 
     draw(shader) {
