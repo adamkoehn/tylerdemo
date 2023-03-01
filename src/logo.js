@@ -45,8 +45,8 @@ export default class Logo {
 
     update(delta) {
         if (this.controller.isClicked()) {
-            mat4.rotate(this.model, this.model, ((this.controller.getMovementX() / 2.0) * Math.PI) / 180.0, [0.0, 1.0, 0.0]);
-            mat4.rotate(this.model, this.model, ((this.controller.getMovementY() / 2.0) * Math.PI) / 180.0, [1.0, 0.0, 0.0]);
+            mat4.rotate(this.model, this.model, ((this.controller.getMovementX() * 20.0) * delta * Math.PI) / 180.0, [0.0, 1.0, 0.0]);
+            mat4.rotate(this.model, this.model, ((this.controller.getMovementY() * 20.0) * delta * Math.PI) / 180.0, [1.0, 0.0, 0.0]);
         } else {
             const degrees = (90.0 * delta);
             mat4.rotate(this.model, this.model, (degrees * Math.PI) / 180.0, [0.2, 0.4, 1.0]);
