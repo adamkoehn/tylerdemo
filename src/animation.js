@@ -2,8 +2,8 @@ export default class Animation {
     constructor(context, shader, camera, logo) {
         this.context = context;
         this.shader = shader;
-        this.logo = logo;
         this.camera = camera;
+        this.logo = logo;
         this.last = 0.0;
         this.drawFrame = this.draw.bind(this);
     }

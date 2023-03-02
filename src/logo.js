@@ -7,14 +7,14 @@ export default class Logo {
         this.context = context;
         this.controller = controller;
         this.gl = context.getGl();
-        this.model = mat4.create();
+        this.modelMatrix = mat4.create();
 
         this.loadModel();
     }
 
     loadModel() {
-        mat4.scale(this.model, this.model, [0.02, 0.02, 0.02]);
-        mat4.rotate(this.model, this.model, (90.0 * Math.PI) / 180.0, [1.0, 0.0, 0.0]);
+        mat4.scale(this.modelMatrix, this.modelMatrix, [0.02, 0.02, 0.02]);
+        mat4.rotate(this.modelMatrix, this.modelMatrix, (90.0 * Math.PI) / 180.0, [1.0, 0.0, 0.0]);
 
         this.mesh = new OBJ.Mesh(logoData);
         OBJ.initMeshBuffers(this.gl, this.mesh);
@@ -39,22 +39,26 @@ export default class Logo {
         this.gl.bindBuffer(this.gl.ARRAY_BUFFER, this.mesh.textureBuffer);
         this.gl.vertexAttribPointer(1, this.mesh.textureBuffer.itemSize, this.gl.FLOAT, false, 0, 0);
         this.gl.enableVertexAttribArray(1);
+
+        this.gl.bindBuffer(this.gl.ARRAY_BUFFER, this.mesh.normalBuffer);
+        this.gl.vertexAttribPointer(2, this.mesh.normalBuffer.itemSize, this.gl.FLOAT, false, 0, 0);
+        this.gl.enableVertexAttribArray(2);
         
         this.gl.bindBuffer(this.gl.ELEMENT_ARRAY_BUFFER, this.mesh.indexBuffer);
     }
 
     update(delta) {
         if (this.controller.isClicked()) {
-            mat4.rotate(this.model, this.model, ((this.controller.getMovementX() * 20.0) * delta * Math.PI) / 180.0, [0.0, 1.0, 0.0]);
-            mat4.rotate(this.model, this.model, ((this.controller.getMovementY() * 20.0) * delta * Math.PI) / 180.0, [1.0, 0.0, 0.0]);
+            mat4.rotate(this.modelMatrix, this.modelMatrix, ((this.controller.getMovementX() * 20.0) * delta * Math.PI) / 180.0, [0.0, 1.0, 0.0]);
+            mat4.rotate(this.modelMatrix, this.modelMatrix, ((this.controller.getMovementY() * 20.0) * delta * Math.PI) / 180.0, [1.0, 0.0, 0.0]);
         } else {
             const degrees = (90.0 * delta);
-            mat4.rotate(this.model, this.model, (degrees * Math.PI) / 180.0, [0.2, 0.4, 1.0]);
+            mat4.rotate(this.modelMatrix, this.modelMatrix, (degrees * Math.PI) / 180.0, [0.2, 0.4, 1.0]);
         }
     }
 
     draw(shader) {
-        shader.setModelMatrix(this.model);
+        shader.setModelMatrix(this.modelMatrix);
         this.gl.drawElements(this.gl.TRIANGLES, this.mesh.indexBuffer.numItems, this.gl.UNSIGNED_SHORT, 0);
     }
 }
