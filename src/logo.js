@@ -1,6 +1,6 @@
 import logoData from "../model/TylerTechnologies.obj"
 import { OBJ } from "webgl-obj-loader";
-import { mat4 } from "gl-matrix";
+import { mat3, mat4 } from "gl-matrix";
 
 export default class Logo {
     constructor(context, controller) {
@@ -8,14 +8,19 @@ export default class Logo {
         this.controller = controller;
         this.gl = context.getGl();
         this.modelMatrix = mat4.create();
+        this.normalMatrix = mat3.create();
 
+        this.resetModel();
         this.loadModel();
     }
 
-    loadModel() {
+    resetModel() {
+        this.modelMatrix = mat4.create();
         mat4.scale(this.modelMatrix, this.modelMatrix, [0.02, 0.02, 0.02]);
         mat4.rotate(this.modelMatrix, this.modelMatrix, (90.0 * Math.PI) / 180.0, [1.0, 0.0, 0.0]);
+    }
 
+    loadModel() {
         this.mesh = new OBJ.Mesh(logoData);
         OBJ.initMeshBuffers(this.gl, this.mesh);
 
@@ -55,10 +60,16 @@ export default class Logo {
             const degrees = (90.0 * delta);
             mat4.rotate(this.modelMatrix, this.modelMatrix, (degrees * Math.PI) / 180.0, [0.2, 0.4, 1.0]);
         }
+
+        let normalMatrix = mat4.create();
+        mat4.invert(normalMatrix, this.modelMatrix);
+        mat4.transpose(normalMatrix, normalMatrix);
+        mat3.fromMat4(this.normalMatrix, normalMatrix);
     }
 
     draw(shader) {
         shader.setModelMatrix(this.modelMatrix);
+        shader.setNormalMatrix(this.normalMatrix);
         this.gl.drawElements(this.gl.TRIANGLES, this.mesh.indexBuffer.numItems, this.gl.UNSIGNED_SHORT, 0);
     }
 }

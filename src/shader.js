@@ -39,9 +39,11 @@ export default class Shader {
         this.program = linkProgram(this.gl);
         this.lightPosition = this.gl.getUniformLocation(this.program, 'LightPosition');
         this.lightColor = this.gl.getUniformLocation(this.program, 'LightColor');
+        this.cameraPosition = this.gl.getUniformLocation(this.program, 'CameraPosition');
         this.modelMatrix = this.gl.getUniformLocation(this.program, 'ModelMatrix');
         this.viewMatrix = this.gl.getUniformLocation(this.program, 'ViewMatrix');
         this.projectionMatrix = this.gl.getUniformLocation(this.program, 'ProjectionMatrix');
+        this.normalMatrix = this.gl.getUniformLocation(this.program, 'NormalMatrix');
     }
 
     getVertexLocation() {
@@ -56,6 +58,10 @@ export default class Shader {
         this.gl.uniform3fv(this.lightColor, lightColor);
     }
 
+    setCameraPosition(cameraPosition) {
+        this.gl.uniform3fv(this.cameraPosition, cameraPosition);
+    }
+
     setModelMatrix(modelMatrix) {
         this.gl.uniformMatrix4fv(this.modelMatrix, false, modelMatrix);
     }
@@ -66,6 +72,10 @@ export default class Shader {
 
     setProjectionMatrix(projectionMatrix) {
         this.gl.uniformMatrix4fv(this.projectionMatrix, false, projectionMatrix);
+    }
+
+    setNormalMatrix(normalMatrix) {
+        this.gl.uniformMatrix3fv(this.normalMatrix, false, normalMatrix);
     }
 
     use() {
