@@ -5,6 +5,8 @@ export default class Controller {
         this.moveY = 0;
         this.startTouchX = 0;
         this.startTouchY = 0;
+        this.paused = false;
+        this.reset = false;
 
         document.addEventListener('mousedown', this.mouseDown.bind(this));
         document.addEventListener('mouseup', this.mouseUp.bind(this));
@@ -12,6 +14,36 @@ export default class Controller {
         document.addEventListener('touchstart', this.touchStart.bind(this));
         document.addEventListener('touchend', this.touchEnd.bind(this));
         document.addEventListener('touchmove', this.touchMove.bind(this));
+        document.addEventListener('keydown', this.keyDown.bind(this));
+        document.addEventListener('keyup', this.keyUp.bind(this));
+    }
+
+    keyDown(event) {
+        switch (event.key) {
+            case ' ':
+                this.paused = !this.paused;
+                break;
+
+            case 'r':
+                this.reset = true;
+                break;
+        }
+    }
+
+    keyUp(event) {
+        switch (event.key) {
+            case 'r':
+                this.reset = false;
+                break;
+        }
+    }
+
+    shouldReset() {
+        return this.reset;
+    }
+
+    isPaused() {
+        return this.paused;
     }
 
     touchStart(event) {
