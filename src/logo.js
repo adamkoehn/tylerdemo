@@ -54,7 +54,7 @@ export default class Logo {
 
     update(delta) {
         if (this.controller.isClicked()) {
-            mat4.rotate(this.modelMatrix, this.modelMatrix, ((this.controller.getMovementX() * 20.0) * delta * Math.PI) / 180.0, [0.0, 0.0, 1.0]);
+            mat4.rotate(this.modelMatrix, this.modelMatrix, ((this.controller.getMovementX() * 20.0) * delta * Math.PI) / 180.0, [0.0, 0.0, -1.0]);
             mat4.rotate(this.modelMatrix, this.modelMatrix, ((this.controller.getMovementY() * 20.0) * delta * Math.PI) / 180.0, [1.0, 0.0, 0.0]);
         } else if (this.controller.shouldReset()) {
             this.resetModel();
