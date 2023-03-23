@@ -7,6 +7,7 @@ export default class Controller {
         this.startTouchY = 0;
         this.paused = false;
         this.reset = false;
+        this.wireframe = false;
 
         document.addEventListener('mousedown', this.mouseDown.bind(this));
         document.addEventListener('mouseup', this.mouseUp.bind(this));
@@ -27,6 +28,10 @@ export default class Controller {
             case 'r':
                 this.reset = true;
                 break;
+
+            case 'w':
+                this.wireframe = !this.wireframe;
+                break;
         }
     }
 
@@ -44,6 +49,10 @@ export default class Controller {
 
     isPaused() {
         return this.paused;
+    }
+
+    shouldDrawWireframe() {
+        return this.wireframe;
     }
 
     touchStart(event) {

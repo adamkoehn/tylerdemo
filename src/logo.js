@@ -70,8 +70,9 @@ export default class Logo {
     }
 
     draw(shader) {
+        const mode = this.controller.shouldDrawWireframe() ? this.gl.LINES : this.gl.TRIANGLES;
         shader.setModelMatrix(this.modelMatrix);
         shader.setNormalMatrix(this.normalMatrix);
-        this.gl.drawElements(this.gl.TRIANGLES, this.mesh.indexBuffer.numItems, this.gl.UNSIGNED_SHORT, 0);
+        this.gl.drawElements(mode, this.mesh.indexBuffer.numItems, this.gl.UNSIGNED_SHORT, 0);
     }
 }
