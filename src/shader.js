@@ -1,6 +1,3 @@
-import vertSource from '../shaders/vert.glsl';
-import fragSource from '../shaders/frag.glsl';
-
 function loadShader(gl, type, source) {
     const shader = gl.createShader(type);
 
@@ -14,7 +11,7 @@ function loadShader(gl, type, source) {
     return shader;
 }
 
-function linkProgram(gl) {
+function linkProgram(gl, vertSource, fragSource) {
     const vertShader = loadShader(gl, gl.VERTEX_SHADER, vertSource);
     const fragShader = loadShader(gl, gl.FRAGMENT_SHADER, fragSource);
     const program = gl.createProgram();
@@ -34,9 +31,9 @@ function linkProgram(gl) {
 }
 
 export default class Shader {
-    constructor(context) {
+    constructor(context, vertSource, fragSource) {
         this.gl = context.getGl();
-        this.program = linkProgram(this.gl);
+        this.program = linkProgram(this.gl, vertSource, fragSource);
         this.lightPosition = this.gl.getUniformLocation(this.program, 'LightPosition');
         this.lightColor = this.gl.getUniformLocation(this.program, 'LightColor');
         this.cameraPosition = this.gl.getUniformLocation(this.program, 'CameraPosition');

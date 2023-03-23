@@ -8,6 +8,7 @@ export default class Controller {
         this.paused = false;
         this.reset = false;
         this.wireframe = false;
+        this.cycleShader = () => {};
 
         document.addEventListener('mousedown', this.mouseDown.bind(this));
         document.addEventListener('mouseup', this.mouseUp.bind(this));
@@ -32,6 +33,10 @@ export default class Controller {
             case 'w':
                 this.wireframe = !this.wireframe;
                 break;
+
+            case 's':
+                this.cycleShader();
+                break;
         }
     }
 
@@ -41,6 +46,10 @@ export default class Controller {
                 this.reset = false;
                 break;
         }
+    }
+
+    setCycleShader(fn) {
+        this.cycleShader = fn;
     }
 
     shouldReset() {
